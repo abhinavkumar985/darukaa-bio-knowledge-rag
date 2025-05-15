@@ -1,7 +1,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 
 const GEMINI_MODEL_NAME = "gemini-2.0-flash";
-const geminiAPIKey = "AIzaSyAT568T8g4bICcz8W1CvUTL2oZ6mPzlqQM";
+const geminiAPIKey = "<your gemini api key>";
 
 const ai = new GoogleGenAI({ apiKey: geminiAPIKey });
 

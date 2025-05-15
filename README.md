@@ -1,6 +1,8 @@
 # Biodiversity and Conservation Knowledge RAG System
 
-This project aims to build a Retrieval-Augmented Generation (RAG) system to provide accurate and relevant information on biodiversity and conservation topics, leveraging Google Cloud and Vertex AI Search.
+This is a Proof of Concept (POC), built during [Google GenAI & Agents for Builders - Berlin Edition](https://rsvp.withgoogle.com/events/gen-ai-builders-berlin?eventId=b8bb8eb0076943bea9ff76f7f49b7bd3&guestId=1088846bda474aa2992677b9ce471057) with the [Agenda](https://docs.google.com/presentation/d/18f74b5tdnAU-UHjiYHYIWwOt3SuD8dA9mS5KAxbNoIA/edit?resourcekey=0-mQzl-JSbxteOGI01R-wQKw&slide=id.g34fa9ffb321_0_1130#slide=id.g34fa9ffb321_0_1130).
+
+This project aims to build a Retrieval-Augmented Generation (RAG) system for [Darukaa](https://www.darukaa.earth/) to provide accurate and relevant information on biodiversity and conservation topics, leveraging Google Cloud and Vertex AI Search.
 
 ## Overall Goal
 
@@ -8,25 +10,25 @@ To create a robust and user-friendly system that can answer complex questions ab
 
 ## Core Components
 
-*   **Knowledge Base:** A collection of relevant PDF documents on biodiversity and conservation.
+*   **Knowledge Base:** A collection of relevant PDF documents (e.g., biodiversity and conservation-related articles, research papers) on biodiversity and conservation.
 *   **Indexing and Retrieval:** Using Google Vertex AI Search to index the PDF documents and retrieve relevant passages based on user queries.
-*   **Language Model:** A powerful language model (e.g., Gemini) to generate coherent and informative answers based on the retrieved information.
 *   **User Interface:** A web application (built with Next.js) for users to interact with the system, input queries, and view responses.
+*   **Language Model (Partially Implemented):** A powerful language model (e.g., Gemini) to generate coherent and informative answers based on the retrieved information.
 
-## Recommended Google Cloud Tools
+## Google Tools Used
 
 *   **Google Vertex AI Search:** For indexing and retrieving information from the PDF knowledge base.
 *   **Google Cloud Storage:** To store the PDF documents.
-*   **Google Cloud Functions or Cloud Run:** For deploying the backend logic that handles user queries and interacts with Vertex AI Search and the language model.
 *   **Vertex AI:** To access and utilize powerful language models.
-
-## Step-by-Step Guide
+*  **Google Cloud Functions or Cloud Run (Not Implemented):** For deploying the backend logic that handles user queries and interacts with Vertex AI Search and the language model.
+ 
+## Approach Taken
 
 ### Phase 1: Setting up the Knowledge Base and Indexing (Focus for Hacking Session)
 
 1.  **Curate Knowledge Base:** Gather relevant PDF documents on biodiversity and conservation topics.
 2.  **Upload to Cloud Storage:** Store the PDF documents in a Google Cloud Storage bucket.
-3.  **Configure Vertex AI Search:**
+3.  **Configure Vertex AI Search:** 
     *   Create a Vertex AI Search data store.
     *   Connect the data store to the Cloud Storage bucket containing the PDFs.
     *   Initiate the indexing process.
@@ -45,28 +47,18 @@ To create a robust and user-friendly system that can answer complex questions ab
     *   Implement logic to send user queries to the backend API.
     *   Display the responses received from the backend.
 
-## Focus for the Hacking Session
+## Improvement
+ 
+*   **Customer Query Improvement:** Use Gemini ai.model to [rephrasec customer](https://github.com/abhinavkumar985/darukaa-bot/blob/master/src/lib/gemini-client.ts#L26) query before sending to RAG, Vertex AI search.
+*   **RAG Response Improvement:** Combine user query and RAG answers to formulate a [better answer](https://github.com/abhinavkumar985/darukaa-bot/blob/master/src/lib/gemini-client.ts#L51) using the Gemini ai.model.
 
-The primary focus for the hacking session will be on **Phase 1: Setting up the Knowledge Base and Indexing**. This involves curating the PDF documents, uploading them to Cloud Storage, and successfully configuring and running the indexing process with Google Vertex AI Search.
-
-## Key Considerations
-
-*   **Document Quality:** The accuracy and relevance of the knowledge base directly impact the system's performance.
-*   **Query Formulation:** How user queries are formulated can affect the retrieval results.
-*   **Language Model Prompting:** Crafting effective prompts for the language model is crucial for generating high-quality answers.
-*   **Scalability:** Consider the expected volume of queries and choose scalable Google Cloud services.
-
-## Tips
-
-*   Start with a small set of documents for initial testing.
-*   Utilize the Vertex AI Search console for debugging and monitoring the indexing process.
-*   Explore different prompting techniques for the language model.
-*   Iterate on the knowledge base and indexing configuration based on testing results.
+## How to Run
+1. Create GCP Bucket and add research files
+2. Create a data source in the Vertex AI Search Project.
+3. Update the configs in discoveryEngine.ts
+4. Get Gemini API Key and configure it in the gemini-clints.ts
+5. Run the app `npm i` and `npm run dev`
 
 ## How the Application Works
 
 The application works by taking a user's query and sending it to a backend service. This service interacts with Google Vertex AI Search, which has pre-indexed a collection of PDF documents related to biodiversity and conservation. Vertex AI Search retrieves the most relevant passages from these documents based on the user's query. These retrieved passages, along with the original query, are then passed to a large language model (like Gemini) hosted on Vertex AI. The language model uses this information to generate a comprehensive and informed answer, which is then sent back to the user interface for display. This process of combining retrieval with generation is known as Retrieval-Augmented Generation (RAG), and it allows the system to provide answers grounded in specific, up-to-date information from the provided PDF files.
-
-## Getting Started
-
-To get started, take a look at src/app/page.tsx.
