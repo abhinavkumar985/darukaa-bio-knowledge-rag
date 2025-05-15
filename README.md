@@ -8,6 +8,13 @@ This project aims to build a Retrieval-Augmented Generation (RAG) system for [Da
 
 To create a robust and user-friendly system that can answer complex questions about biodiversity and conservation by retrieving information from a curated knowledge base (PDF documents) and generating informative responses.
 
+## Demo
+
+Check the cool demo here
+https://github.com/user-attachments/assets/05f03ab4-a8a2-47b8-af30-09648b5b15fa
+
+
+
 ## Core Components
 
 *   **Knowledge Base:** A collection of relevant PDF documents (e.g., biodiversity and conservation-related articles, research papers) on biodiversity and conservation.
