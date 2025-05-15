@@ -1,8 +1,8 @@
-# **App Name**: Daruka Chat
+# **App Name**: Darukaa Chat
 
 ## Core Features:
 
-- Homepage Design: Display the Daruka homepage with branding elements like the logo and color scheme.
+- Homepage Design: Display the Darukaa homepage with branding elements like the logo and color scheme.
 - Chat Interface: Implement a real-time chat interface for user interaction.
 - Message Handling: Display messages with clear distinctions between user and bot.
 - Loading Indicator: Show a loading indicator while waiting for responses from the backend Cloud Run service.
@@ -10,7 +10,7 @@
 
 ## Style Guidelines:
 
-- Primary color: Daruka brand color (if available, specify hex code).
+- Primary color: Darukaa brand color (if available, specify hex code).
 - Secondary color: Complementary color to the primary (if available, specify hex code).
 - Accent: Teal (#008080) for interactive elements and highlights.
 - Clean and readable font for both the homepage text and chat interface messages.

@@ -18,6 +18,7 @@ export function ChatInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [suggestion, setSuggestion] = useState<string[]>([]);
   // Scroll to the bottom when messages state changes
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -25,7 +26,11 @@ export function ChatInterface() {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
+    submitMessage(inputValue)
 
+  };
+  // Suggested code may be subject to a license. Learn more: ~LicenseLog:1641399544.
+  const submitMessage = async (inputValue: string) => {
     const userMessage: Message = {
       id: crypto.randomUUID(),
       text: inputValue,
@@ -64,7 +69,7 @@ export function ChatInterface() {
         relatedQuestions: botText.relatedQuestions
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
-
+      setSuggestion(botText.relatedQuestions);
     } catch (error) {
       console.error('Error communicating with backend:', error);
       toast({
@@ -74,17 +79,16 @@ export function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
-  };
-
+  }
   const handleRelatedQuestionClick = (question: string) => {
-    setInputValue(question);
-    handleSubmit(new Event('submit') as unknown as FormEvent);
+    submitMessage(question)
+    setSuggestion([])
   };
 
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-2xl rounded-xl">
       <CardHeader className="border-b">
-        <CardTitle className="text-2xl font-semibold text-center text-primary">Chat with Daruka Assistant</CardTitle>
+        <CardTitle className="text-2xl font-semibold text-center text-primary">Chat with Darukaa Assistant</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
         <ScrollArea className="h-[50vh] p-4">
@@ -112,18 +116,6 @@ export function ChatInterface() {
                   <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-primary-foreground/70 text-right' : 'text-muted-foreground text-left'}`}>
                     {format(message.timestamp, 'p')}
                   </p>
-                  {message.sender === 'bot' && message.relatedQuestions && message.relatedQuestions.length > 0 && (
-                    <div className="mt-3 border-t pt-3 border-border">
-                      <p className="text-xs font-semibold mb-2">Related Questions:</p>
-                      <ul className="space-y-2">
-                        {message.relatedQuestions.map((question, index) => (
-                          <li key={index} className="text-xs text-accent-foreground hover:underline cursor-pointer" onClick={() => handleRelatedQuestionClick(question)}>
-                            {question}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                 </div>
                 {message.sender === 'user' && (
                   <Avatar className="h-10 w-10 border border-primary">
@@ -144,13 +136,22 @@ export function ChatInterface() {
                 <div className="max-w-[70%] p-3 rounded-xl shadow bg-secondary text-secondary-foreground rounded-bl-none">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="h-4 w-4 animate-spin text-accent" />
-                    <p className="text-sm text-muted-foreground">Daruka is typing...</p>
+                    <p className="text-sm text-muted-foreground">Darukaa is typing...</p>
                   </div>
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} /> {/* Invisible element to scroll to */}
           </div>
+          {suggestion && suggestion.length > 0 && (
+            <div className="mt-3 flex flex-col gap-2">
+              {suggestion.map((question, index) => (
+                <Button key={index} className="text-xs text-accent-foreground hover:underline cursor-pointer" onClick={() => handleRelatedQuestionClick(question)}>
+                  {question}
+                </Button>
+              ))}
+            </div>
+          )}
         </ScrollArea>
       </CardContent>
       <CardFooter className="p-4 border-t">

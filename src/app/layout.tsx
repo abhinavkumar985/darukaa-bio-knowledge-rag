@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
-  title: 'Daruka Chat',
-  description: 'Interactive chat with Daruka',
+  title: 'Darukaa Chat',
+  description: 'Interactive chat with Darukaa',
 };
 
 export default function RootLayout({

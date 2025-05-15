@@ -16,9 +16,9 @@ export default function HomePage() {
             Innovating Carbon & Biodiversity Solutions
           </h4>
           <p className="text-lg text-muted-foreground leading-relaxed">
-            Daruka Assistant is an intelligent assistant designed to help you with your queries.
+            Darukaa Assistant is an intelligent assistant designed to help you with your queries.
             Interact with our chat interface below to get started. Ask questions, seek information,
-            and let Daruka Assistant guide you.
+            and let Darukaa Assistant guide you.
           </p>
         </section>
 
@@ -30,7 +30,7 @@ export default function HomePage() {
           <Card className="shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl text-primary">How it Works</CardTitle>
-              <CardDescription>Simple steps to get assistance from Daruka.</CardDescription>
+              <CardDescription>Simple steps to get assistance from Darukaa.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4 text-left text-foreground">
               <div className="flex items-start gap-4">
@@ -43,11 +43,11 @@ export default function HomePage() {
               </div>
               <div className="flex items-start gap-4">
                 <span className="text-accent font-bold text-2xl">3.</span>
-                <p>Daruka will process your request and provide a response in real-time.</p>
+                <p>Darukaa will process your request and provide a response in real-time.</p>
               </div>
               <div className="flex items-start gap-4">
                 <span className="text-accent font-bold text-2xl">4.</span>
-                <p>Continue the conversation as needed. Daruka remembers the context of your chat.</p>
+                <p>Continue the conversation as needed. Darukaa remembers the context of your chat.</p>
               </div>
             </CardContent>
           </Card>
