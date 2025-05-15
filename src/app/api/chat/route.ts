@@ -1,6 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { searchDiscoveryEngine, answerDiscoveryEngine } from '@/lib/discoveryEngine';
+import { createBetterAnswer, rephraseQuery } from '@/lib/gemini-client';
 
 
 
@@ -9,19 +10,29 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { query } = body;
 
+    const rephrasedQuery = await rephraseQuery(query);
+
     // 1. Get relevant information from Discovery Engine Search
-    const searchResponse = await searchDiscoveryEngine(query);
+    const searchResponse = await searchDiscoveryEngine(rephrasedQuery[0]['Query'] || query);
     const queryId = searchResponse.queryId;
     const sessionData = searchResponse.session;
     // @ts-ignore
     const name = sessionData.name;
-    console.log('Query ID:', queryId);
-    console.log('Session:', name)
 
     // 2. Generate an answer using Discovery Engine Answer
-    const answerResponse = await answerDiscoveryEngine(query, queryId, name);
+    const answerResponse: any = await answerDiscoveryEngine(query, queryId, name);
+    const betterAns = await createBetterAnswer(query, answerResponse)
 
-    return NextResponse.json(answerResponse);
+    const newAns = {
+      ...answerResponse.answer,
+      answerText: betterAns
+    }
+    const newResponse = {
+      ...answerResponse,
+      answer: newAns
+    }
+    // answerResponse.answer = betterAns;
+    return NextResponse.json(newResponse);
   } catch (error) {
     console.error('Error in /api/chat:', error);
     let errorMessage = 'Failed to communicate with the chat service.';
