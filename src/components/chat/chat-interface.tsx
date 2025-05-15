@@ -61,10 +61,10 @@ export function ChatInterface() {
         text: botText.answerText,
         sender: 'bot',
         timestamp: new Date(),
+        relatedQuestions: botText.relatedQuestions
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
 
-      const relatedQuestions: string[] = botText.relatedQuestions;
     } catch (error) {
       console.error('Error communicating with backend:', error);
       toast({
@@ -74,6 +74,11 @@ export function ChatInterface() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleRelatedQuestionClick = (question: string) => {
+    setInputValue(question);
+    handleSubmit(new Event('submit') as unknown as FormEvent);
   };
 
   return (
@@ -107,6 +112,18 @@ export function ChatInterface() {
                   <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-primary-foreground/70 text-right' : 'text-muted-foreground text-left'}`}>
                     {format(message.timestamp, 'p')}
                   </p>
+                  {message.sender === 'bot' && message.relatedQuestions && message.relatedQuestions.length > 0 && (
+                    <div className="mt-3 border-t pt-3 border-border">
+                      <p className="text-xs font-semibold mb-2">Related Questions:</p>
+                      <ul className="space-y-2">
+                        {message.relatedQuestions.map((question, index) => (
+                          <li key={index} className="text-xs text-accent-foreground hover:underline cursor-pointer" onClick={() => handleRelatedQuestionClick(question)}>
+                            {question}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
                 {message.sender === 'user' && (
                   <Avatar className="h-10 w-10 border border-primary">
