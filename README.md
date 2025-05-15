@@ -12,6 +12,7 @@ To create a robust and user-friendly system that can answer complex questions ab
 
 [Watch the Video Demo Here](https://github.com/user-attachments/assets/05f03ab4-a8a2-47b8-af30-09648b5b15fa)
 
+[Another One](https://github.com/user-attachments/assets/8dff396e-54c8-44da-8bc7-85fca969aac5)
 
 ## Core Components
 
