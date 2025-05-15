@@ -10,9 +10,7 @@ To create a robust and user-friendly system that can answer complex questions ab
 
 ## Demo
 
-Check the cool demo here
-https://github.com/user-attachments/assets/05f03ab4-a8a2-47b8-af30-09648b5b15fa
-
+[Watch the Video Demo Here](https://github.com/user-attachments/assets/05f03ab4-a8a2-47b8-af30-09648b5b15fa)
 
 
 ## Core Components
