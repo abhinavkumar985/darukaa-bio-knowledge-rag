@@ -17,14 +17,11 @@ export function ChatInterface() {
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // Scroll to the bottom when messages state changes
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!inputValue.trim() || isLoading) return;
@@ -38,6 +35,8 @@ export function ChatInterface() {
     setMessages((prevMessages) => [...prevMessages, userMessage]);
     setInputValue('');
     setIsLoading(true);
+
+
 
     try {
       const response = await fetch('/api/chat', {
@@ -59,15 +58,16 @@ export function ChatInterface() {
 
       const botMessage: Message = {
         id: crypto.randomUUID(),
-        text: botText.answerText        ,
+        text: botText.answerText,
         sender: 'bot',
         timestamp: new Date(),
       };
       setMessages((prevMessages) => [...prevMessages, botMessage]);
+
+      const relatedQuestions: string[] = botText.relatedQuestions;
     } catch (error) {
       console.error('Error communicating with backend:', error);
       toast({
-        variant: "destructive",
         title: "Error",
         description: (error as Error).message || "Failed to communicate with the chat service. Please try again.",
       });
@@ -79,17 +79,16 @@ export function ChatInterface() {
   return (
     <Card className="w-full max-w-2xl mx-auto shadow-2xl rounded-xl">
       <CardHeader className="border-b">
-        <CardTitle className="text-2xl font-semibold text-center text-primary">Chat with Daruka</CardTitle>
+        <CardTitle className="text-2xl font-semibold text-center text-primary">Chat with Daruka Assistant</CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <ScrollArea className="h-[50vh] p-4" ref={scrollAreaRef}>
+        <ScrollArea className="h-[50vh] p-4">
           <div className="space-y-6">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-end gap-3 ${
-                  message.sender === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                className={`flex items-end gap-3 ${message.sender === 'user' ? 'justify-end' : 'justify-start'
+                  }`}
               >
                 {message.sender === 'bot' && (
                   <Avatar className="h-10 w-10 border border-accent">
@@ -99,11 +98,10 @@ export function ChatInterface() {
                   </Avatar>
                 )}
                 <div
-                  className={`max-w-[70%] p-3 rounded-xl shadow ${
-                    message.sender === 'user'
-                      ? 'bg-primary text-primary-foreground rounded-br-none'
-                      : 'bg-secondary text-secondary-foreground rounded-bl-none'
-                  }`}
+                  className={`max-w-[70%] p-3 rounded-xl shadow ${message.sender === 'user'
+                    ? 'bg-primary text-primary-foreground rounded-br-none'
+                    : 'bg-secondary text-secondary-foreground rounded-bl-none'
+                    }`}
                 >
                   <p className="text-sm leading-relaxed">{message.text}</p>
                   <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-primary-foreground/70 text-right' : 'text-muted-foreground text-left'}`}>
@@ -112,20 +110,20 @@ export function ChatInterface() {
                 </div>
                 {message.sender === 'user' && (
                   <Avatar className="h-10 w-10 border border-primary">
-                     <AvatarFallback>
+                    <AvatarFallback>
                       <User className="h-5 w-5 text-primary" />
                     </AvatarFallback>
                   </Avatar>
                 )}
               </div>
             ))}
-            {isLoading && messages[messages.length-1]?.sender === 'user' && (
+            {isLoading && messages[messages.length - 1]?.sender === 'user' && (
               <div className="flex items-end gap-3 justify-start">
-                 <Avatar className="h-10 w-10 border border-accent">
-                    <AvatarFallback>
-                      <Bot className="h-5 w-5 text-accent" />
-                    </AvatarFallback>
-                  </Avatar>
+                <Avatar className="h-10 w-10 border border-accent">
+                  <AvatarFallback>
+                    <Bot className="h-5 w-5 text-accent" />
+                  </AvatarFallback>
+                </Avatar>
                 <div className="max-w-[70%] p-3 rounded-xl shadow bg-secondary text-secondary-foreground rounded-bl-none">
                   <div className="flex items-center space-x-2">
                     <Loader2 className="h-4 w-4 animate-spin text-accent" />
@@ -134,6 +132,7 @@ export function ChatInterface() {
                 </div>
               </div>
             )}
+            <div ref={messagesEndRef} /> {/* Invisible element to scroll to */}
           </div>
         </ScrollArea>
       </CardContent>
