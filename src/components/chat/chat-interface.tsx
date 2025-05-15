@@ -59,7 +59,7 @@ export function ChatInterface() {
 
       const botMessage: Message = {
         id: crypto.randomUUID(),
-        text: botText,
+        text: botText.answerText        ,
         sender: 'bot',
         timestamp: new Date(),
       };

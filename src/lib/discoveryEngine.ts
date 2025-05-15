@@ -33,10 +33,10 @@ export async function searchDiscoveryEngine(query: string): Promise<{ queryId: s
     }),
   });
 
-  if (!response.ok) {
-    const errorBody = await response.text();
-    throw new Error(`Discovery Engine Search API error: ${response.status} - ${errorBody}`);
-  }
+  // if (!response.ok) {
+  //   const errorBody = await response.text();
+  //   throw new Error(`Discovery Engine Search API error: ${response.status} - ${errorBody}`);
+  // }
 
   const data: any = await response.json();
 
@@ -46,15 +46,16 @@ export async function searchDiscoveryEngine(query: string): Promise<{ queryId: s
   // For now, we'll assume the session name can be reconstructed or is part of a
   // field in the response like 'session' if the API returns it explicitly.
   // Based on the second curl example, the session seems to be returned.
-  const session = data.session;
+  const session = data.sessionInfo;
 
   // The second curl example shows queryId being returned in the response body.
-  const queryId = data.queryId;
+  const queryId = session.queryId;
+  const name = session.name;
 
 
-  if (!queryId || !session) {
-      console.error("Could not find queryId or session in search response:", data);
-      throw new Error("Failed to get queryId or session from Discovery Engine search.");
+  if (!name || !queryId) {
+    console.error("Could not find queryId or session in search response:", data);
+    throw new Error("Failed to get queryId or session from Discovery Engine search.");
   }
 
 
@@ -87,13 +88,13 @@ export async function answerDiscoveryEngine(query: string, queryId: string, sess
     })
   });
 
-  if (!response.ok) {
-    throw new Error(`Discovery Engine Answer API error: ${response.status}`);
-  }
+  // if (!response.ok) {
+  //   throw new Error(`Discovery Engine Answer API error: ${response.status}`);
+  // }
 
-
+  const data: any = await response.json();
   // @ts-ignore
-  return { queryId, session };
+  return data;
 }
 
 
